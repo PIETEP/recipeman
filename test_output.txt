@@ -1,0 +1,41 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/dodhu/dev/recipe[39m
+
+ [31m笶ｯ[39m src/lib/__tests__/memory_service.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+       [32m笨・[39m Markdown縺九ｉ繝励Ο繝輔ぃ繧､繝ｫ繧呈ｭ｣縺励￥繝代・繧ｹ縺吶ｋ[32m 2[2mms[22m[39m
+       [32m笨・[39m 繝輔ぃ繧､繝ｫ譛ｪ蟄伜惠譎ゅ↓繝・ヵ繧ｩ繝ｫ繝亥､繧定ｿ斐☆[32m 1[2mms[22m[39m
+       [32m笨・[39m 遨ｺ縺ｮ繝ｪ繧ｹ繝亥､繧呈ｭ｣縺励￥蜃ｦ逅・☆繧・[32m 0[2mms[22m[39m
+       [32m笨・[39m 謇矩俣縺碁ｫ倥＞繝輔ぅ繝ｼ繝峨ヰ繝・け縺ｧ譎ら洒繝｡繝｢縺瑚ｿｽ蜉縺輔ｌ繧・[32m 1[2mms[22m[39m
+       [32m笨・[39m 菴楢ｪｿ繝槭う繝翫せ縺ｮ繝輔ぅ繝ｼ繝峨ヰ繝・け縺ｧ繝｡繝｢縺瑚ｿｽ蜉縺輔ｌ繧・[32m 0[2mms[22m[39m
+       [32m笨・[39m 謾ｹ蝟・Γ繝｢縺後◎縺ｮ縺ｾ縺ｾ菫晏ｭ倥＆繧後ｋ[32m 0[2mms[22m[39m
+       [32m笨・[39m 菴吶ｊ鬟滓攝縺御ｿ晏ｭ倥＆繧後ｋ[32m 0[2mms[22m[39m
+node.exe : 
+発生場所 行:1 文字:1
++ & "C:\Program Files\nodejs/node.exe" "C:
+\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+[31m竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ[39m[1m[41m Failed Sui
+tes 1 [49m[22m[31m竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ[39m
+
+[41m[1m FAIL [22m[49m src/lib/__tests_
+_/memory_service.test.ts[2m > [22mMemory
+Service[2m > [22mbuildFeedbackSummary (v
+ia GeminiService)
+[31m[1mError[22m: No test found in suit
+e buildFeedbackSummary (via GeminiService)
+[39m
+[31m[2m竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡
+ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ[1/1]竡ｯ[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 22:02:29
+[2m   Duration [22m 258ms[2m (transform 45ms, setup 0ms, import 76ms, tests 9ms, environment 0ms)[22m
+

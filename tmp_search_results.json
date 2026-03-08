@@ -1,0 +1,52 @@
+[
+    {
+        "searchQuery": "鶏胸肉 小松菜 レシピ 時短 クラシル デリッシュキッチン レタスクラブ",
+        "results": [
+            {
+                "title": "小松菜と鶏むね肉の甘辛炒め",
+                "url": "https://www.kurashiru.com/recipes/ec05e5a0-5237-4677-9203-b986015f1551",
+                "snippet": "やわらかい鶏むね肉と小松菜を甘辛いタレで炒めるレシピ。ご飯によく合う一品。"
+            },
+            {
+                "title": "鶏むね肉と小松菜のしょうが炒め",
+                "url": "https://delishkitchen.tv/recipes/146039474778112469",
+                "snippet": "鶏むね肉を柔らかく仕上げる工夫がされた中華風の炒め物。"
+            },
+            {
+                "title": "とり肉と小松菜の塩にんにく炒め",
+                "url": "https://www.lettuceclub.net/recipe/dish/18177/",
+                "snippet": "にんにくの香りが食欲をそそる塩にんにく炒め。"
+            }
+        ]
+    },
+    {
+        "searchQuery": "鯖缶 ほうれん草 トマト煮 レシピ 簡単 クラシル デリッシュキッチン",
+        "results": [
+            {
+                "title": "サバ缶で簡単トマト煮",
+                "url": "https://www.kurashiru.com/recipes/7729f635-661d-4eb4-862d-0a3ce5b66d73",
+                "snippet": "サバ缶を汁ごと使うことで時短でもじっくり煮込んだような味わい。"
+            },
+            {
+                "title": "ほうれんそうとさばのトマト煮",
+                "url": "https://www.kyounoryouri.jp/recipe/15481_ほうれんそうとさばのトマト煮.html",
+                "snippet": "サバ缶とトマト缶を使って手軽に作れるレシピ。"
+            }
+        ]
+    },
+    {
+        "searchQuery": "豚肉 ピーマン チンジャオロース レシピ 時短 レタスクラブ 味の素パーク",
+        "results": [
+            {
+                "title": "あっさり青椒肉絲(チンジャオロースー)",
+                "url": "https://www.lettuceclub.net/recipe/dish/10125/",
+                "snippet": "豚薄切り肉、ピーマン、たけのこを使用し、簡単かつ時短で作れる。"
+            },
+            {
+                "title": "和風チンジャオロウスー",
+                "url": "https://park.ajinomoto.co.jp/recipe/card/703666/",
+                "snippet": "豚ヒレ肉とピーマンを使った10分以内で作れる和風の時短メニュー。"
+            }
+        ]
+    }
+]
