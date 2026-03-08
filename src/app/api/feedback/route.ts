@@ -7,12 +7,6 @@ export async function POST(request: Request) {
         const feedback = await request.json();
         const userId = feedback.userId || 'default';
 
-        // Save to local JSON DB
-        await DBService.saveFeedback({
-            ...feedback,
-            userId,
-            date: new Date().toISOString()
-        });
 
         // Update learned preferences in Markdown + monthly log
         await MemoryService.updatePreferences(userId, feedback);

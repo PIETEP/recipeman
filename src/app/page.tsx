@@ -28,6 +28,7 @@ export default function Home() {
   const [userId, setUserId] = useState<string>('default');
   const [refinement, setRefinement] = useState("");
   const [showKnowledge, setShowKnowledge] = useState(false);
+  const [submittingFeedback, setSubmittingFeedback] = useState(false);
   const [showUserAdmin, setShowUserAdmin] = useState(false);
   const [users, setUsers] = useState<{ id: string; name: string }[]>([]);
   const [newUserName, setNewUserName] = useState("");
@@ -133,24 +134,32 @@ export default function Home() {
 
   const handleFeedback = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!feedbackRecipe) return;
+    if (!feedbackRecipe || submittingFeedback) return;
+
+    setSubmittingFeedback(true);
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
-    await fetch('/api/feedback', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...data,
-        userId,
-        recipeId: feedbackRecipe.id,
-        recipeTitle: feedbackRecipe.title,
-        recipeUrl: feedbackRecipe.url,
-      }),
-    });
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...data,
+          userId,
+          recipeId: feedbackRecipe.id,
+          recipeTitle: feedbackRecipe.title,
+          recipeUrl: feedbackRecipe.url,
+        }),
+      });
 
-    setShowFeedback(null);
-    setFeedbackRecipe(null);
+      setShowFeedback(null);
+      setFeedbackRecipe(null);
+    } catch (e) {
+      console.error('Failed to submit feedback');
+    } finally {
+      setSubmittingFeedback(false);
+    }
   };
 
   if (loading) return (
@@ -435,12 +444,15 @@ export default function Home() {
 
                 <div className="flex gap-3 pt-2">
                   <button type="submit"
-                    className="flex-1 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3 font-bold text-white transition-all hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98]">
-                    送信してメモを更新
+                    disabled={submittingFeedback}
+                    className="flex-1 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3 font-bold text-white transition-all hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2">
+                    {submittingFeedback ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
+                    {submittingFeedback ? '送信中...' : '送信してメモを更新'}
                   </button>
                   <button type="button"
                     onClick={() => { setShowFeedback(null); setFeedbackRecipe(null); }}
-                    className="rounded-xl bg-slate-800 px-6 py-3 font-bold text-slate-400 hover:bg-slate-700 transition-colors">
+                    disabled={submittingFeedback}
+                    className="rounded-xl bg-slate-800 px-6 py-3 font-bold text-slate-400 hover:bg-slate-700 transition-colors disabled:opacity-50">
                     閉じる
                   </button>
                 </div>

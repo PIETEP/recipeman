@@ -23,17 +23,27 @@ export class KnowledgeService {
             // 2. Get Preferences (Recent feedback summaries)
             preferences = await MemoryService.getPreferences(userId);
 
-            // 3. Get Discovery Log (Raw recent feedbacks)
+            // 3. Get Discovery Log (Raw recent feedbacks, de-duplicated for UI)
             const feedbacks = await DBService.getFeedbacks(userId);
             const sortedFeedbacks = feedbacks.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-            discoveryLog = sortedFeedbacks.slice(0, 5).map(f => ({
-                date: f.date.split('T')[0],
-                title: f.recipeTitle,
-                url: f.recipeUrl || '#',
-                rating: f.rating,
-                note: f.improvementNote || ''
-            }));
+            const seen = new Set<string>();
+            discoveryLog = [];
+            for (const f of sortedFeedbacks) {
+                const day = f.date.split('T')[0];
+                const key = `${f.recipeTitle}-${day}`;
+                if (seen.has(key)) continue;
+                seen.add(key);
+
+                discoveryLog.push({
+                    date: day,
+                    title: f.recipeTitle,
+                    url: f.recipeUrl || '#',
+                    rating: f.rating,
+                    note: f.improvementNote || ''
+                });
+                if (discoveryLog.length >= 5) break;
+            }
 
             // 4. Extract recentTrends (Simulated insights from recent feedback)
             recentTrends = sortedFeedbacks
