@@ -101,7 +101,7 @@ tagsには以下を適切に含めてください:
 
 3つのレシピをJSON配列で返してください。`;
 
-        const MODEL_NAME = 'gemini-2.5-flash';
+        const MODEL_NAME = 'gemini-2.0-flash';
         const MAX_RETRIES = 2;
         const RETRY_DELAYS = [0, 15000, 30000]; // 0s, 15s, 30s
 
@@ -219,7 +219,7 @@ tagsには以下を適切に含めてください:
         refinementRequest?: string
     ): Promise<string[]> {
         const genAI = this.getClient();
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
         const prompt = `あなたは料理のプロフェッショナルです。以下のユーザー情報に基づき、
 今日の夕食に最適なレシピをウェブで検索するための「具体的かつ効果的な日本語の検索キーワード」を3つ生成してください。
@@ -256,7 +256,7 @@ JSON配列（文字列のみ）で返してください。
     ): Promise<GeminiRecipe[]> {
         const genAI = this.getClient();
         const model = genAI.getGenerativeModel({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.0-flash',
             generationConfig: { responseMimeType: 'application/json' }
         });
 

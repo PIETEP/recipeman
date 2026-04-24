@@ -1,6 +1,6 @@
 import { DBService, RecipeCandidate } from './db_service';
 import { MemoryService } from './memory_service';
-import { GeminiService } from './gemini_service';
+import { GeminiService } from './groq_service';
 import fs from 'fs';
 import path from 'path';
 

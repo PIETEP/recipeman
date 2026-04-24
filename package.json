@@ -14,6 +14,7 @@
     "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.98.0",
     "clsx": "^2.1.1",
+    "groq-sdk": "^1.1.2",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "react": "19.2.3",

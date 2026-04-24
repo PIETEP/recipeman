@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Clock, ThumbsUp, Leaf, Zap, ExternalLink, ChefHat, Recycle, Sparkles, RefreshCw, Loader2, History, Users, Plus, Settings } from 'lucide-react';
-import AuthGuard from '@/components/AuthGuard';
 
 interface Recipe {
   id: string;
@@ -172,7 +171,6 @@ export default function Home() {
   );
 
   return (
-    <AuthGuard>
       <main className="min-h-screen bg-slate-950 text-slate-200 selection:bg-indigo-500/30">
         {/* Nav */}
         <nav className="border-b border-slate-800/50 bg-slate-950/80 px-6 py-4 backdrop-blur-xl sticky top-0 z-50">
@@ -609,6 +607,5 @@ export default function Home() {
           </div>
         )}
       </main>
-    </AuthGuard>
   );
 }
