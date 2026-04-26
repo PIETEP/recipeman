@@ -93,47 +93,35 @@ export class RecipeService {
             return 'No search results available.';
         }
 
-        const allResults: any[] = [];
-
-        for (const query of queries) {
-            try {
-                console.log(`[RecipeService] Searching: "${query}"`);
+        console.log(`[RecipeService] Searching ${queries.length} queries in parallel...`);
+        const settled = await Promise.allSettled(
+            queries.map(async (query) => {
                 const res = await fetch('https://google.serper.dev/search', {
                     method: 'POST',
                     headers: {
                         'X-API-KEY': SERPER_API_KEY,
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        q: query + ' レシピ',
-                        gl: 'jp',
-                        hl: 'ja',
-                        num: 5,
-                    }),
+                    body: JSON.stringify({ q: query + ' レシピ', gl: 'jp', hl: 'ja', num: 5 }),
                 });
-
-                if (!res.ok) {
-                    console.error(`[RecipeService] Serper error: ${res.status}`);
-                    continue;
-                }
-
+                if (!res.ok) throw new Error(`Serper error: ${res.status}`);
                 const data = await res.json();
                 const organic = data.organic || [];
-
-                allResults.push({
+                console.log(`[RecipeService] Found ${organic.length} results for "${query}"`);
+                return {
                     query,
                     results: organic.slice(0, 5).map((o: any) => ({
                         title: o.title,
                         url: o.link,
                         snippet: o.snippet || '',
                     })),
-                });
+                };
+            })
+        );
 
-                console.log(`[RecipeService] Found ${organic.length} results for "${query}"`);
-            } catch (e) {
-                console.error(`[RecipeService] Search failed for "${query}":`, e);
-            }
-        }
+        const allResults = settled
+            .filter((r): r is PromiseFulfilledResult<any> => r.status === 'fulfilled')
+            .map(r => r.value);
 
         if (allResults.length === 0) {
             return 'No search results available.';

@@ -21,6 +21,7 @@ export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
   const [showFeedback, setShowFeedback] = useState<string | null>(null);
   const [feedbackRecipe, setFeedbackRecipe] = useState<Recipe | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -108,6 +109,14 @@ export default function Home() {
     fetchSuggestions();
   }, [userId, fetchSuggestions]);
 
+  useEffect(() => {
+    if (!loading && !generating) { setLoadingStep(0); return; }
+    setLoadingStep(0);
+    const t1 = setTimeout(() => setLoadingStep(1), 1500);
+    const t2 = setTimeout(() => setLoadingStep(2), 3000);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [loading, generating]);
+
   const openFeedback = (recipe?: Recipe) => {
     if (recipe) {
       setFeedbackRecipe(recipe);
@@ -161,11 +170,36 @@ export default function Home() {
     }
   };
 
-  if (loading) return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
-      <div className="flex flex-col items-center gap-4">
-        <Loader2 className="h-10 w-10 animate-spin text-indigo-400" />
-        <p className="text-lg font-light tracking-widest uppercase text-slate-400">Gemini がレシピを探索中...</p>
+  const LOADING_STEPS = [
+    { label: '献立の条件を分析中...', icon: '🧠' },
+    { label: 'レシピサイトを検索中...', icon: '🔍' },
+    { label: 'AIが最適な3品を厳選中...', icon: '✨' },
+  ];
+
+  const isLoadingOrGenerating = loading || generating;
+
+  const SkeletonCard = () => (
+    <div className="flex flex-col overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900/80 to-slate-900/40">
+      <div className="flex items-center justify-between border-b border-slate-800/50 px-6 py-4">
+        <div className="h-10 w-10 rounded-full bg-slate-800 animate-pulse" />
+        <div className="h-4 w-20 rounded-full bg-slate-800 animate-pulse" />
+      </div>
+      <div className="flex flex-1 flex-col p-6 gap-4">
+        <div className="h-6 w-3/4 rounded-lg bg-slate-800 animate-pulse" />
+        <div className="flex gap-2">
+          <div className="h-6 w-12 rounded-full bg-slate-800 animate-pulse" />
+          <div className="h-6 w-16 rounded-full bg-slate-800 animate-pulse" />
+          <div className="h-6 w-14 rounded-full bg-slate-800 animate-pulse" />
+        </div>
+        <div className="space-y-2">
+          <div className="h-4 w-full rounded bg-slate-800 animate-pulse" />
+          <div className="h-4 w-5/6 rounded bg-slate-800 animate-pulse" />
+          <div className="h-4 w-4/6 rounded bg-slate-800 animate-pulse" />
+        </div>
+        <div className="space-y-2 mt-2">
+          <div className="h-4 w-full rounded bg-slate-800 animate-pulse" />
+          <div className="h-4 w-3/4 rounded bg-slate-800 animate-pulse" />
+        </div>
       </div>
     </div>
   );
@@ -266,15 +300,26 @@ export default function Home() {
             </div>
           </header>
 
-          {error && (
+          {error && !isLoadingOrGenerating && (
             <div className="mb-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-amber-200 text-sm">
               ⚠️ {error}（フォールバックレシピを表示中）
             </div>
           )}
 
+          {isLoadingOrGenerating && (
+            <div className="mb-8 flex items-center justify-center gap-3">
+              <Loader2 className="h-4 w-4 animate-spin text-indigo-400" />
+              <span className="text-sm font-medium text-slate-400 tracking-wide">
+                {LOADING_STEPS[loadingStep]?.icon} {LOADING_STEPS[loadingStep]?.label}
+              </span>
+            </div>
+          )}
+
           {/* Recipe Cards */}
           <div className="grid gap-8 lg:grid-cols-3">
-            {recipes.map((recipe, idx) => (
+            {isLoadingOrGenerating
+              ? [0, 1, 2].map(i => <SkeletonCard key={i} />)
+              : recipes.map((recipe, idx) => (
               <article
                 key={recipe.id}
                 className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900/80 to-slate-900/40 backdrop-blur-sm transition-all duration-300 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1"
@@ -370,6 +415,7 @@ export default function Home() {
               </article>
             ))}
           </div>
+
         </div>
 
         {/* Feedback Modal */}
