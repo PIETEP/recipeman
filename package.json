@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "test:ci": "vitest run src/lib/__tests__/gemini_service.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
