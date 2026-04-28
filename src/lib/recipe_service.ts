@@ -44,6 +44,17 @@ export class RecipeService {
             // This is a special marker for the agent to know it needs to provide search results.
             const searchResultsContext = await this.gatherSearchResults(queries);
 
+            // Extract valid URLs from Serper results for validation
+            const validUrls = new Set<string>();
+            try {
+                const parsed = JSON.parse(searchResultsContext);
+                for (const item of parsed) {
+                    for (const result of item.results || []) {
+                        if (result.url) validUrls.add(result.url);
+                    }
+                }
+            } catch {}
+
             // 3. Summarize into final recipes
             const geminiRecipes = await GeminiService.summarizeSearchResults(
                 searchResultsContext,
@@ -52,11 +63,11 @@ export class RecipeService {
                 refinementRequest
             );
 
-            // Convert to RecipeCandidate
+            // Convert to RecipeCandidate, validating URLs against Serper results
             const candidates: RecipeCandidate[] = geminiRecipes.map((r, i) => ({
                 id: `gemini-${Date.now()}-${i}`,
                 title: r.title,
-                url: r.url,
+                url: this.validateUrl(r.url, r.source, r.title, validUrls),
                 source: r.source,
                 cookingTime: r.cookingTime,
                 tags: r.tags,
@@ -128,6 +139,31 @@ export class RecipeService {
         }
 
         return JSON.stringify(allResults, null, 2);
+    }
+
+    private static validateUrl(url: string, source: string, title: string, validUrls: Set<string>): string {
+        if (url && url.startsWith('http') && validUrls.has(url)) return url;
+        console.log(`[RecipeService] Invalid/hallucinated URL detected, replacing: ${url}`);
+        return this.buildSearchUrl(source, title);
+    }
+
+    private static buildSearchUrl(source: string, title: string): string {
+        const q = encodeURIComponent(title);
+        if (source.includes('クックパッド') || source.toLowerCase().includes('cookpad'))
+            return `https://cookpad.com/jp/search/${q}`;
+        if (source.includes('クラシル') || source.toLowerCase().includes('kurashiru'))
+            return `https://www.kurashiru.com/search?query=${q}`;
+        if (source.includes('デリッシュキッチン') || source.toLowerCase().includes('delish'))
+            return `https://delishkitchen.tv/search?q=${q}`;
+        if (source.includes('レタスクラブ'))
+            return `https://www.lettuceclub.net/recipe/search/${q}/`;
+        if (source.includes('白ごはん') || source.toLowerCase().includes('sirogohan'))
+            return `https://www.sirogohan.com/search/?q=${q}`;
+        if (source.includes('Nadia') || source.includes('nadia'))
+            return `https://oceans-nadia.com/search?q=${q}`;
+        if (source.includes('味の素') || source.toLowerCase().includes('ajinomoto'))
+            return `https://www.ajinomoto.co.jp/recipe/search/?q=${q}`;
+        return `https://www.google.com/search?q=${encodeURIComponent(source + ' ' + title + ' レシピ')}`;
     }
 
     private static readMemoryFile(userId: string, filename: string): string {
