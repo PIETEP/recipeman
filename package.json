@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:ci": "vitest run src/lib/__tests__/gemini_service.test.ts src/lib/__tests__/business-requirements.test.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
